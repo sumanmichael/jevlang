@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  push:
+    branches: ["**"]  # not tags: release.yml calls this workflow for those
+  pull_request:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.14"]
+    steps:
+      - uses: actions/checkout@v5  # moving major, current
+      - uses: astral-sh/setup-uv@v10.1.0  # no moving v10 tag published
+        with:
+          cache-suffix: ${{ matrix.python }}  # one cache per matrix leg, or they race
+      - run: uv sync --python ${{ matrix.python }}
+      - run: uv run pytest

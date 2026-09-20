@@ -1,0 +1,16 @@
+{
+  "comments": { "lineComment": "#" },
+  "brackets": [["{", "}"], ["[", "]"], ["(", ")"]],
+  "autoClosingPairs": [
+    { "open": "{", "close": "}" },
+    { "open": "[", "close": "]" },
+    { "open": "(", "close": ")" },
+    { "open": "\"", "close": "\"", "notIn": ["string"] },
+    { "open": "'", "close": "'", "notIn": ["string", "comment"] }
+  ],
+  "surroundingPairs": [["{", "}"], ["[", "]"], ["(", ")"], ["\"", "\""], ["'", "'"]],
+  "indentationRules": {
+    "increaseIndentPattern": ":\\s*(#.*)?$",
+    "decreaseIndentPattern": "^\\s*(else|elif|except|finally)\\b.*:"
+  }
+}

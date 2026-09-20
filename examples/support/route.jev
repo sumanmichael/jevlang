@@ -1,0 +1,54 @@
+"""Route support tickets to a team.
+
+    python -m jevlang examples/support/route.jev
+"""
+
+from dataclasses import dataclass
+
+from jevlang import ask_all
+
+
+@dataclass
+class Ticket:
+    id: str
+    subject: str
+    body: str
+    plan: str
+
+    def __jev_state__(self):
+        # send only what the judgment needs; plan is noise for routing
+        return {"subject": self.subject, "body": self.body}
+
+
+FRUSTRATION = (
+    "How frustrated does the customer appear in `body`?",
+    ["Calm, just stating facts", "Frustrated but civil", "Very angry, strong language"],
+)
+
+
+def route(t):
+    # a cheap gate that is usually false stays a plain `~`: batching it would
+    # pay for the questions below on every ticket that this one turns away
+    if t ~ "an automated out-of-office reply":
+        return "ignore"
+    # these two we always want, so one call answers both; `t ~ "urgent" and
+    # t ~ FRUSTRATION` would be two
+    a = ask_all(t, urgent="urgent", frustration=FRUSTRATION)
+    if a.urgent and a.frustration >= 2:
+        return "human"
+    jev t "Which team should handle the ticket in `subject` and `body`?":
+        case "technical" ("bugs, outages, integration errors"): return "technical"
+        case "billing" ("invoice, refund, duplicate charge"): return "billing"
+        case "sales" ("pricing, plans, account questions") if prob > 0.6: return "sales"
+        else: return "human"
+
+
+TICKETS = [
+    Ticket("T-1", "API down", "Every request returns 500 errors since this morning.", "enterprise"),
+    Ticket("T-2", "Double charge", "I was charged twice for invoice A-104, please refund one.", "pro"),
+    Ticket("T-3", "Furious", "URGENT: very angry, strong language incoming. Pricing is a joke.", "free"),
+]
+
+if __name__ == "__main__":
+    for t in TICKETS:
+        print(f"{t.id} -> {route(t)}")

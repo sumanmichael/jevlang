@@ -1,0 +1,36 @@
+"""Auto-approve an expense only when the policy call is clear.
+
+    python -m jevlang examples/expenses/approve.jev
+"""
+
+from dataclasses import dataclass
+
+POLICY = "client meals, team travel, and software subscriptions"
+
+
+@dataclass
+class Expense:
+    vendor: str
+    amount: float
+    note: str
+
+
+def decide(e):
+    # a rule decides this one, so do not spend a question on it
+    if e.amount > 500:
+        return "manager"
+    jev e f"Does this expense fall under company policy: {POLICY}?":
+        case "yes" ("reimbursable business spend") if confidence > 0.8: return "auto-approved"
+        case "no" ("a personal purchase") if confidence > 0.8: return "rejected"
+        else: return "manager"
+
+
+EXPENSES = [
+    Expense("Delta", 420.0, "team travel to the customer onsite"),
+    Expense("Steam", 59.99, "a personal purchase, a video game"),
+    Expense("Hilton", 890.0, "three nights, conference"),
+]
+
+if __name__ == "__main__":
+    for e in EXPENSES:
+        print(f"{e.vendor:8} {e.amount:8.2f}  {decide(e)}")

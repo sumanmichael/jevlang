@@ -1,0 +1,27 @@
+{
+  "name": "jev",
+  "scopeName": "source.jev",
+  "patterns": [
+    { "include": "#jev-header" },
+    { "include": "#case-clause" },
+    { "include": "#question-operator" },
+    { "include": "source.python" }
+  ],
+  "repository": {
+    "jev-header": {
+      "comment": "`jev <state> <instructions>:` only ever opens a line",
+      "match": "^\\s*(jev)\\b",
+      "captures": { "1": { "name": "keyword.control.conditional.jev" } }
+    },
+    "case-clause": {
+      "comment": "`case` is a soft keyword; inside a jev block it opens a clause",
+      "match": "^\\s*(case)\\b",
+      "captures": { "1": { "name": "keyword.control.conditional.jev" } }
+    },
+    "question-operator": {
+      "comment": "binary `~`. Strings and comments start earlier on the line, so they win",
+      "match": "~",
+      "name": "keyword.operator.question.jev"
+    }
+  }
+}

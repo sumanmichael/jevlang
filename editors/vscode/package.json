@@ -1,0 +1,37 @@
+{
+  "name": "jevlang",
+  "displayName": "jevlang",
+  "description": "Syntax highlighting for .jev files",
+  "version": "0.1.0",
+  "publisher": "sumanmichael",
+  "license": "MIT",
+  "repository": "https://github.com/sumanmichael/jevlang",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "jev",
+        "aliases": [
+          "jevlang",
+          "jev"
+        ],
+        "extensions": [
+          ".jev"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "jev",
+        "scopeName": "source.jev",
+        "path": "./syntaxes/jev.tmLanguage.json"
+      }
+    ]
+  }
+}

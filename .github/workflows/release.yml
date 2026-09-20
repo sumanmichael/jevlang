@@ -1,0 +1,27 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: pypi  # the trusted publisher on PyPI is bound to this name
+    permissions:
+      id-token: write  # trusted publishing; there is no API token to leak
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v10.1.0
+      - name: tag matches the version in pyproject.toml
+        run: |
+          tagged="${GITHUB_REF_NAME#v}"
+          declared=$(uv version --short)
+          test "$tagged" = "$declared" || { echo "tag $GITHUB_REF_NAME does not match pyproject $declared"; exit 1; }
+      - run: uv build
+      - run: uvx twine check --strict dist/*
+      - uses: pypa/gh-action-pypi-publish@release/v1

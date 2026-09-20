@@ -1,0 +1,3 @@
+# .jev is Python plus a `~` operator and a `jev`/`case` block. Linguist has
+# never heard of it, so without this the files render as grey plain text.
+*.jev linguist-language=Python

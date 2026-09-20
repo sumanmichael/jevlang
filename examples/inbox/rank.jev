@@ -1,0 +1,23 @@
+"""Sort a morning inbox by how much it needs a human right now.
+
+    python -m jevlang examples/inbox/rank.jev
+"""
+
+URGENCY = (
+    "How urgent is this message for the recipient?",
+    ["can wait a week", "needs a reply today", "needs a reply right now"],
+)
+
+INBOX = [
+    "Reminder: your subscription renews next month, no action needed.",
+    "Can you review the draft contract? Legal needs a reply today.",
+    "Production is down and customers cannot log in, needs a reply right now.",
+    "Lunch thursday?",
+]
+
+if __name__ == "__main__":
+    # score once, then sort; `key=lambda m: m ~ URGENCY` would ask twice per
+    # message, once to sort and once to print
+    scored = [(m ~ URGENCY, m) for m in INBOX]
+    for urgency, msg in sorted(scored, reverse=True):
+        print(f"{urgency:.1f}  {msg}")

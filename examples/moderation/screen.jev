@@ -1,0 +1,34 @@
+"""Screen posts before they go live: allow, hold, or remove.
+
+    python -m jevlang examples/moderation/screen.jev
+"""
+
+from jevlang import ask_all
+
+SEVERITY = (
+    "How harmful is this post to the people reading it?",
+    ["harmless", "rude", "abusive"],
+)
+
+
+def screen(post):
+    # one call answers both, since every post needs both answers
+    a = ask_all(post, spam="unsolicited advertising or a scam link", severity=SEVERITY)
+    if a.spam > 0.9:
+        return "remove (spam)"
+    if a.severity >= 2 and a.severity.confidence > 0.8:
+        return "remove (abusive)"
+    if a.severity >= 1:
+        return "hold for a moderator"
+    return "allow"
+
+
+POSTS = [
+    "Has anyone got the new release working on Debian?",
+    "Buy followers now, unsolicited advertising or a scam link at bit.ly/x",
+    "you are rude and wrong and everyone here knows it",
+]
+
+if __name__ == "__main__":
+    for p in POSTS:
+        print(f"{screen(p):24} {p[:52]}")

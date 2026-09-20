@@ -1,0 +1,16 @@
+{
+  "name": "jevlang",
+  "owner": {
+    "name": "Suman Michael"
+  },
+  "metadata": {
+    "description": "The jevlang agent skill, served from the jevlang repo itself"
+  },
+  "plugins": [
+    {
+      "name": "jevlang",
+      "source": "./",
+      "description": "Write .jev files: the ~ question operator, the jev/case block, batching, testing, and the mistakes that are easy to make."
+    }
+  ]
+}

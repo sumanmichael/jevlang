@@ -1,0 +1,19 @@
+{
+  "name": "jevlang",
+  "description": "Teaches a coding agent to write .jev files: the ~ question operator, the jev/case block, batching, testing, and the mistakes that are easy to make.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Suman Michael"
+  },
+  "repository": "https://github.com/sumanmichael/jevlang",
+  "license": "MIT",
+  "keywords": [
+    "jevlang",
+    "jev",
+    "typesafe",
+    "decision",
+    "triage",
+    "routing",
+    "python"
+  ]
+}

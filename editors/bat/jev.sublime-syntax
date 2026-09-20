@@ -1,0 +1,12 @@
+%YAML 1.2
+---
+name: jev
+file_extensions: [jev]
+scope: source.jev
+
+contexts:
+  main:
+    - match: '^\s*(jev|case)\b'
+      captures:
+        1: keyword.control.flow.jev
+    - include: scope:source.python
